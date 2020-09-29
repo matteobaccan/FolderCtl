@@ -15,3 +15,16 @@
 # FolderCtl
 Folder modification analyzer
 
+### Installation in 1 Simple Step 
+
+Via curl
+> `curl https://github.com/matteobaccan/FolderCtl/target/???"`
+
+Via wget
+> `wget https://github.com/matteobaccan/FolderCtl/target/???"`
+
+### Help / Commands List
+
+| Command  | Description | Arguments |
+| ------------- | ------------- | ------------- |
+| `folderctl help`  | List all available commands in FolderCtl  | |
