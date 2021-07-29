@@ -11,6 +11,7 @@
 ![Java CI with Maven](https://github.com/matteobaccan/FolderCtl/workflows/Java%20CI%20with%20Maven/badge.svg)
 ![CodeQL](https://github.com/matteobaccan/FolderCtl/workflows/CodeQL/badge.svg)
 [![StyleCI](https://github.styleci.io/repos/297964112/shield?branch=master)](https://github.styleci.io/repos/297964112?branch=master)
+[![GraalVM Build](https://github.com/matteobaccan/FolderCtl/actions/workflows/graalvm.yml/badge.svg)](https://github.com/matteobaccan/FolderCtl/actions/workflows/graalvm.yml)
 
 # FolderCtl
 Folder modification analyzer
