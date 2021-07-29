@@ -83,7 +83,9 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Wait for H2 support -->
+
+            <!-- Native Image Wait for H2 support -->
+
             <!--
             <plugin>
                 <groupId>org.graalvm.nativeimage</groupId>
@@ -97,7 +99,6 @@
                         <phase>package</phase>
                         <configuration>
                             <mainClass>it.baccan.folderctl.FolderCtl</mainClass>
-                            <buildArgs>--no-fallback --allow-incomplete-classpath</buildArgs>
                             <imageName>FolderCtl</imageName>
                             <skip>false</skip>
                         </configuration>
