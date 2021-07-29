@@ -5,13 +5,16 @@
     <artifactId>FolderCtl</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    
+    <name>FolderCtl ${project.version}</name>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <!-- Allineare la versione con graalvm.yml -->
+        <graalvm.version>20.2.0</graalvm.version>
     </properties>
-    
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/commons-cli/commons-cli -->
         <dependency>
@@ -46,7 +49,13 @@
             <artifactId>logback-core</artifactId>
             <version>1.2.5</version>
         </dependency>
-    </dependencies>        
+        <dependency>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>graal-sdk</artifactId>
+            <version>${graalvm.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
@@ -71,6 +80,25 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.graalvm.nativeimage</groupId>
+                <artifactId>native-image-maven-plugin</artifactId>
+                <version>${graalvm.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>native-image</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <mainClass>it.baccan.folderctl.FolderCtl</mainClass>
+                            <buildArgs>--no-fallback --allow-incomplete-classpath</buildArgs>
+                            <imageName>Sockredirector</imageName>
+                            <skip>false</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
