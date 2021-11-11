@@ -14,6 +14,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
+    if: github.ref == 'refs/heads/master'
     steps:
       - name: Setup GraalVM action
         # You may pin to the exact commit or the version.
@@ -24,7 +25,7 @@ jobs:
           java-version: 11 # optional
           # The version of GraalVM to make available on PATH. E.g. 20.1.0, 19.3.2. See https://github.com/graalvm/graalvm-ce-builds/releases
           # Allineare la versione con pom.xml
-          graalvm-version: 20.2.0
+          graalvm-version: 21.3.0
           # Install GraalVM Native Image
           native-image: true # optional
 
@@ -44,41 +45,62 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
 
       - name: Call maven
-        run: mvn -B package --file pom.xml
+        run: mvn --no-transfer-progress -B package --file pom.xml -DskipNativeVersion=false
 
-      - name: Commit files
+      - name: Create release date
         if: ${{ matrix.os == 'windows-latest' }}
+        id: read_release_win
+        shell: bash
         run: |
-          dir D:\a\FolderCtl\FolderCtl\target\
-          copy D:\a\FolderCtl\FolderCtl\target\*.exe   D:\a\FolderCtl\FolderCtl\executable\windows
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add *.exe
-          git commit -m "[Automated] Added Windows build files"
-          git pull
+          r=$(date "+%Y%m%d-%H%M%S")
+          echo "::set-output name=RELEASE_BODY::$r"
 
-      - name: Commit files
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: |
-          cp /home/runner/work/FolderCtl/FolderCtl/target/FolderCtl /home/runner/work/FolderCtl/FolderCtl/executable/linux/
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "[Automated] Added Linux build files"
-          git pull
-
-      - name: Commit files
-        if: ${{ matrix.os == 'macos-latest' }}
-        run: |
-          cp /Users/runner/work/FolderCtl/FolderCtl/target/FolderCtl /Users/runner/work/FolderCtl/FolderCtl/executable/mac/
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git commit -m "[Automated] Added Mac build files"
-          git pull
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Upload Windows Binaries to Release
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: svenstaro/upload-release-action@v2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: release/windows/${{ steps.read_release_win.outputs.RELEASE_BODY }}
+          file: D:\a\FolderCtl\FolderCtl\target\FolderCtl-1.0.0.exe
+          asset_name: FolderCtl.exe
+          body: |
+            Rilascio Windows del ${{ steps.read_release_win.outputs.RELEASE_BODY }}
+
+      - name: Create release date
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        id: read_release_linux
+        shell: bash
+        run: |
+          r=$(date "+%Y%m%d-%H%M%S")
+          echo "::set-output name=RELEASE_BODY::$r"
+
+      - name: Upload Linux Binaries to Release
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: release/linux/${{ steps.read_release_linux.outputs.RELEASE_BODY }}
+          file: /home/runner/work/FolderCtl/FolderCtl/target/FolderCtl
+          asset_name: FolderCtl
+          body: |
+            Rilascio Linux del ${{ steps.read_release_linux.outputs.RELEASE_BODY }}
+
+      - name: Create release date
+        if: ${{ matrix.os == 'macos-latest' }}
+        id: read_release_mac
+        shell: bash
+        run: |
+          r=$(date "+%Y%m%d-%H%M%S")
+          echo "::set-output name=RELEASE_BODY::$r"
+
+      - name: Upload Mac Binaries to Release
+        if: ${{ matrix.os == 'macos-latest' }}
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: release/mac/${{ steps.read_release_mac.outputs.RELEASE_BODY }}
+          file: /Users/runner/work/FolderCtl/FolderCtl/target/FolderCtl
+          asset_name: FolderCtl
+          body: |
+            Rilascio MacOS del ${{ steps.read_release_mac.outputs.RELEASE_BODY }}
+

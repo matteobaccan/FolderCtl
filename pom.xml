@@ -12,7 +12,8 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <!-- Allineare la versione con graalvm.yml -->
-        <graalvm.version>20.3.4</graalvm.version>
+        <graalvm.version>21.2.0</graalvm.version>
+        <skipNativeVersion>true</skipNativeVersion>
     </properties>
 
     <dependencies>
@@ -56,9 +57,54 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.openrewrite.maven</groupId>
+                <artifactId>rewrite-maven-plugin</artifactId>
+                <version>4.16.0</version>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- https://docs.openrewrite.org/reference/recipes/java -->
+                    <activeRecipes>
+                        <recipe>org.openrewrite.java.cleanup.UseCollectionInterfaces</recipe>
+                        <recipe>org.openrewrite.java.cleanup.HiddenField</recipe>
+                        <recipe>org.openrewrite.java.cleanup.MissingOverrideAnnotation</recipe>
+                        <recipe>org.openrewrite.java.cleanup.NeedBraces</recipe>
+                        <recipe>org.openrewrite.java.cleanup.UseJavaStyleArrayDeclarations</recipe>
+                        <recipe>org.openrewrite.java.cleanup.RemoveExtraSemicolons</recipe>
+                        <recipe>org.openrewrite.java.cleanup.NoFinalizer</recipe>
+                        <recipe>org.openrewrite.java.cleanup.UnnecessaryParentheses</recipe>
+                        <recipe>org.openrewrite.java.cleanup.UnnecessaryCloseInTryWithResources</recipe>
+                        <recipe>org.openrewrite.java.cleanup.UseDiamondOperator</recipe>
+                        <recipe>org.openrewrite.java.cleanup.MultipleVariableDeclarations</recipe>
+                        <recipe>org.openrewrite.java.cleanup.IsEmptyCallOnCollections</recipe>
+                        <recipe>org.openrewrite.java.cleanup.StaticMethodNotFinal</recipe>
+                        <recipe>org.openrewrite.java.cleanup.LambdaBlockToExpression</recipe>
+                        <recipe>org.openrewrite.java.format.AutoFormat</recipe>
+                    </activeRecipes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <showDeprecation>true</showDeprecation>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
@@ -84,28 +130,27 @@
                 </executions>
             </plugin>
 
-            <!-- Native Image Wait for H2 support -->
-
-            <!--
             <plugin>
                 <groupId>org.graalvm.nativeimage</groupId>
                 <artifactId>native-image-maven-plugin</artifactId>
                 <version>${graalvm.version}</version>
                 <executions>
                     <execution>
+                        <id>native-build</id>
+                        <phase>package</phase>
                         <goals>
                             <goal>native-image</goal>
                         </goals>
-                        <phase>package</phase>
                         <configuration>
                             <mainClass>it.baccan.folderctl.FolderCtl</mainClass>
+                            <buildArgs>--no-fallback --allow-incomplete-classpath --enable-https --native-image-info -H:ReflectionConfigurationFiles=../graal/reflection-config.json</buildArgs>
                             <imageName>FolderCtl</imageName>
-                            <skip>false</skip>
+                            <skip>${skipNativeVersion}</skip>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-            -->
+
         </plugins>
     </build>
 </project>
