@@ -13,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+      max-parallel: 1
 
     if: github.ref == 'refs/heads/master'
     steps:
@@ -54,6 +55,13 @@ jobs:
         run: |
           r=$(date "+%Y%m%d-%H%M%S")
           echo "::set-output name=RELEASE_BODY::$r"
+
+      - name: List release
+        if: ${{ matrix.os == 'windows-latest' }}
+        id: read_release_win
+        shell: bash
+        run: |
+          ls D:\a\FolderCtl\FolderCtl\target\
 
       - name: Upload Windows Binaries to Release
         if: ${{ matrix.os == 'windows-latest' }}
