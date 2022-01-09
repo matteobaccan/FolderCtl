@@ -35,7 +35,7 @@ public class H2Storage {
         try {
             Class.forName("org.h2.Driver");
             h2 = DriverManager.getConnection("jdbc:h2:~/folderCtl", "sa", "");
-            try ( Statement t = h2.createStatement()) {
+            try (Statement t = h2.createStatement()) {
                 // Cre la struttura dati che serve
                 t.execute("CREATE TABLE IF NOT EXISTS folderCtl"
                         + "("
@@ -61,13 +61,13 @@ public class H2Storage {
         log.info("UpdateFile [{}]-[{}][{}][{}]", seed, path, length, lastModified);
         boolean ret = false;
         try {
-            try ( PreparedStatement t2 = h2.prepareStatement("MERGE INTO folderCtl(seed, file, size, lastmodified) KEY (FILE) VALUES(?,?,?,?)")) {
+            try (PreparedStatement t2 = h2.prepareStatement("MERGE INTO folderCtl(seed, file, size, lastmodified) KEY (FILE) VALUES(?,?,?,?)")) {
                 t2.setLong(1, seed);
                 t2.setString(2, path);
                 t2.setLong(3, length);
                 t2.setLong(4, lastModified);
                 if (t2.execute()) {
-                    ret = (t2.getUpdateCount() > 0);
+                    ret = t2.getUpdateCount() > 0;
                 }
             }
         } catch (SQLException sQLException) {
@@ -87,9 +87,9 @@ public class H2Storage {
         log.trace("checkFile [{}]-[{}][{}][{}]", seed, path, length, lastModified);
         boolean ret = false;
         try {
-            try ( PreparedStatement t2 = h2.prepareStatement("select size, lastmodified from folderCtl where file=?")) {
+            try (PreparedStatement t2 = h2.prepareStatement("select size, lastmodified from folderCtl where file=?")) {
                 t2.setString(1, path);
-                try ( ResultSet r2 = t2.executeQuery()) {
+                try (ResultSet r2 = t2.executeQuery()) {
                     String error = "Error with file [" + path + "]";
                     if (r2.next()) {
                         boolean lenOk = r2.getLong(1) == length;
@@ -127,11 +127,11 @@ public class H2Storage {
         log.trace("cleanOldScan [{}]-[{}][{}][{}]", seed, path);
         boolean ret = false;
         try {
-            try ( PreparedStatement t2 = h2.prepareStatement("DELETE folderCtl WHERE seed!=? AND file like ?")) {
+            try (PreparedStatement t2 = h2.prepareStatement("DELETE folderCtl WHERE seed!=? AND file like ?")) {
                 t2.setLong(1, seed);
                 t2.setString(2, path + "%");
                 if (t2.execute()) {
-                    ret = (t2.getUpdateCount() > 0);
+                    ret = t2.getUpdateCount() > 0;
                 }
             }
         } catch (SQLException sQLException) {

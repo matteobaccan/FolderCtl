@@ -88,8 +88,8 @@ public class FolderCtl {
                 HelpFormatter formatter = new HelpFormatter();
                 formatter.printHelp("FolderCtl", options);
                 System.exit(0);
-            }            
-            
+            }
+
             folderCtl.run();
         } catch (ParseException | FolderCtlException exp) {
             // oops, something went wrong
@@ -112,7 +112,7 @@ public class FolderCtl {
         AtomicLong fileInError = new AtomicLong(0);
         AtomicLong fileUpdated = new AtomicLong(0);
         AtomicLong fileValidated = new AtomicLong(0);
-        try ( Stream<Path> walk = Files.walk(Paths.get(folder))) {
+        try (Stream<Path> walk = Files.walk(Paths.get(folder))) {
 
             // File List
             List<String> result = walk.filter(Files::isRegularFile)
@@ -120,9 +120,9 @@ public class FolderCtl {
                     .collect(Collectors.toList());
 
             // Store data
-            result.forEach(file -> {                
+            result.forEach(file -> {
                 File file2check = new File(file);
-                if(!excludeFile(file)){
+                if (!excludeFile(file)) {
                     if (update) {
                         h2Storage.updateFile(file, file2check.length(), file2check.lastModified());
                         fileUpdated.incrementAndGet();
@@ -159,13 +159,13 @@ public class FolderCtl {
 
     private boolean excludeFile(final String file) {
         AtomicBoolean ret = new AtomicBoolean(false);
-        exclude.forEach(pattern ->{
-            if( !ret.get()){
-                if( Wildcard.match(file, pattern) ){
+        exclude.forEach(pattern -> {
+            if (!ret.get()) {
+                if (Wildcard.match(file, pattern)) {
                     log.info("Exclude file [{}]", file);
                     ret.set(true);
                 }
-            }        
+            }
         });
         return ret.get();
     }
