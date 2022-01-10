@@ -12,7 +12,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        #os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [windows-latest]
       max-parallel: 1
 
     if: github.ref == 'refs/heads/master'
@@ -61,7 +62,7 @@ jobs:
         id: read_release_win2
         shell: bash
         run: |
-          ls D:\a\FolderCtl\FolderCtl\target\
+          ls D:/a/FolderCtl/FolderCtl/target/
 
       - name: Upload Windows Binaries to Release
         if: ${{ matrix.os == 'windows-latest' }}
