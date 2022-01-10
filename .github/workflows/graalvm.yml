@@ -57,12 +57,12 @@ jobs:
           r=$(date "+%Y%m%d-%H%M%S")
           echo "::set-output name=RELEASE_BODY::$r"
 
-      - name: List release
-        if: ${{ matrix.os == 'windows-latest' }}
-        id: read_release_win2
-        shell: bash
-        run: |
-          ls D:/a/FolderCtl/FolderCtl/target/
+#     - name: List release
+#       if: ${{ matrix.os == 'windows-latest' }}
+#       id: read_release_win2
+#       shell: bash
+#       run: |
+#         ls D:/a/FolderCtl/FolderCtl/target/
 
       - name: Upload Windows Binaries to Release
         if: ${{ matrix.os == 'windows-latest' }}
@@ -70,7 +70,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: release/windows/${{ steps.read_release_win.outputs.RELEASE_BODY }}
-          file: D:\a\FolderCtl\FolderCtl\target\FolderCtl-1.0.0.exe
+          file: D:\a\FolderCtl\FolderCtl\target\FolderCtl.exe
           asset_name: FolderCtl.exe
           body: |
             Rilascio Windows del ${{ steps.read_release_win.outputs.RELEASE_BODY }}
