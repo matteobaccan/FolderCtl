@@ -58,7 +58,7 @@ jobs:
 
       - name: List release
         if: ${{ matrix.os == 'windows-latest' }}
-        id: read_release_win
+        id: read_release_win2
         shell: bash
         run: |
           ls D:\a\FolderCtl\FolderCtl\target\
