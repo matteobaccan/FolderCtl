@@ -116,8 +116,8 @@ public class FolderCtl {
 
             // File List
             List<String> result = walk.filter(Files::isRegularFile)
-                    .map(x -> x.toString())
-                    .collect(Collectors.toList());
+                .map(x -> x.toString())
+                .collect(Collectors.toList());
 
             // Store data
             result.forEach(file -> {

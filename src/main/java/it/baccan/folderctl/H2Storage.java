@@ -38,12 +38,12 @@ public class H2Storage {
             try (Statement t = h2.createStatement()) {
                 // Cre la struttura dati che serve
                 t.execute("CREATE TABLE IF NOT EXISTS folderCtl"
-                        + "("
-                        + "SEED BIGINT"
-                        + ", FILE VARCHAR(1024) UNIQUE"
-                        + ", SIZE BIGINT"
-                        + ", LASTMODIFIED BIGINT"
-                        + ")");
+                    + "("
+                    + "SEED BIGINT"
+                    + ", FILE VARCHAR(1024) UNIQUE"
+                    + ", SIZE BIGINT"
+                    + ", LASTMODIFIED BIGINT"
+                    + ")");
             }
         } catch (SQLException | ClassNotFoundException ex) {
             log.error("Error connecting cache database [{}]", ex.getMessage());
