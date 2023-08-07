@@ -87,7 +87,7 @@
                         <recipe>org.openrewrite.staticanalysis.UseJavaStyleArrayDeclarations</recipe>
                         <recipe>org.openrewrite.staticanalysis.RemoveExtraSemicolons</recipe>
                         <recipe>org.openrewrite.staticanalysis.NoFinalizer</recipe>
-                        <recipe>org.openrewrite.java.cleanup.UnnecessaryParentheses</recipe>
+                        <recipe>org.openrewrite.staticanalysis.UnnecessaryParentheses</recipe>
                         <!--
                         <recipe>org.openrewrite.staticanalysis.UnnecessaryCloseInTryWithResources</recipe>
                         -->
@@ -97,7 +97,7 @@
                         <recipe>org.openrewrite.staticanalysis.StaticMethodNotFinal</recipe>
                         <recipe>org.openrewrite.staticanalysis.LambdaBlockToExpression</recipe>
                         <recipe>org.openrewrite.java.format.AutoFormat</recipe>
-                    </activeRecipes>                   
+                    </activeRecipes>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -105,7 +105,7 @@
                         <artifactId>rewrite-static-analysis</artifactId>
                         <version>1.0.4</version>
                     </dependency>
-                </dependencies>      
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
