@@ -86,16 +86,16 @@ jobs:
           r=$(date "+%Y%m%d-%H%M%S")
           echo "::set-output name=RELEASE_BODY::$r"
 
-      - name: Upload Windows Binaries to Release
-        if: ${{ matrix.os == 'windows-latest' }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: release/windows/${{ steps.read_release_win.outputs.RELEASE_BODY }}
-          file: D:\a\FolderCtl\FolderCtl\target\FolderCtl.exe
-          asset_name: FolderCtl.exe
-          body: |
-            Rilascio Windows del ${{ steps.read_release_win.outputs.RELEASE_BODY }}
+#      - name: Upload Windows Binaries to Release
+#        if: ${{ matrix.os == 'windows-latest' }}
+#        uses: svenstaro/upload-release-action@v2
+#        with:
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          tag: release/windows/${{ steps.read_release_win.outputs.RELEASE_BODY }}
+#          file: D:\a\FolderCtl\FolderCtl\target\FolderCtl.exe
+#          asset_name: FolderCtl.exe
+#          body: |
+#            Rilascio Windows del ${{ steps.read_release_win.outputs.RELEASE_BODY }}
 
       - name: Create release date
         if: ${{ matrix.os == 'ubuntu-latest' }}
@@ -105,16 +105,16 @@ jobs:
           r=$(date "+%Y%m%d-%H%M%S")
           echo "::set-output name=RELEASE_BODY::$r"
 
-      - name: Upload Linux Binaries to Release
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: release/linux/${{ steps.read_release_linux.outputs.RELEASE_BODY }}
-          file: /home/runner/work/FolderCtl/FolderCtl/target/FolderCtl
-          asset_name: FolderCtl
-          body: |
-            Rilascio Linux del ${{ steps.read_release_linux.outputs.RELEASE_BODY }}
+#      - name: Upload Linux Binaries to Release
+#        if: ${{ matrix.os == 'ubuntu-latest' }}
+#        uses: svenstaro/upload-release-action@v2
+#        with:
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          tag: release/linux/${{ steps.read_release_linux.outputs.RELEASE_BODY }}
+#          file: /home/runner/work/FolderCtl/FolderCtl/target/FolderCtl
+#          asset_name: FolderCtl
+#          body: |
+#            Rilascio Linux del ${{ steps.read_release_linux.outputs.RELEASE_BODY }}
 
       - name: Create release date
         if: ${{ matrix.os == 'macos-latest' }}
@@ -124,14 +124,14 @@ jobs:
           r=$(date "+%Y%m%d-%H%M%S")
           echo "::set-output name=RELEASE_BODY::$r"
 
-      - name: Upload Mac Binaries to Release
-        if: ${{ matrix.os == 'macos-latest' }}
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: release/mac/${{ steps.read_release_mac.outputs.RELEASE_BODY }}
-          file: /Users/runner/work/FolderCtl/FolderCtl/target/FolderCtl
-          asset_name: FolderCtl
-          body: |
-            Rilascio MacOS del ${{ steps.read_release_mac.outputs.RELEASE_BODY }}
+#      - name: Upload Mac Binaries to Release
+#        if: ${{ matrix.os == 'macos-latest' }}
+#        uses: svenstaro/upload-release-action@v2
+#        with:
+#          repo_token: ${{ secrets.GITHUB_TOKEN }}
+#          tag: release/mac/${{ steps.read_release_mac.outputs.RELEASE_BODY }}
+#          file: /Users/runner/work/FolderCtl/FolderCtl/target/FolderCtl
+#          asset_name: FolderCtl
+#          body: |
+#            Rilascio MacOS del ${{ steps.read_release_mac.outputs.RELEASE_BODY }}
 
