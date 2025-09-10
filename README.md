@@ -16,16 +16,24 @@
 # FolderCtl
 Folder modification analyzer
 
-### Installation in 1 Simple Step 
+### Building from Source
 
-Via curl
-> `curl https://github.com/matteobaccan/FolderCtl/target/???"`
+To build the native executable, you need to have GraalVM and Maven installed. You can then run the following command from the root of the project:
 
-Via wget
-> `wget https://github.com/matteobaccan/FolderCtl/target/???"`
+```bash
+mvn package -DskipNativeVersion=false
+```
+
+The executable will be created in the `target/` directory.
+
+The project can be built on Windows, Linux, and macOS.
 
 ### Help / Commands List
 
 | Command  | Description | Arguments |
 | ------------- | ------------- | ------------- |
-| `folderctl help`  | List all available commands in FolderCtl  | |
+| `help`  | Print the help message  | |
+| `folder`  | The folder to scan  | `folderctl --folder /path/to/folder` |
+| `update`  | Update the folder structure snapshot  | `folderctl --folder /path/to/folder --update` |
+| `validate`  | Validate the folder against the snapshot  | `folderctl --folder /path/to/folder --validate` |
+| `exclude`  | Exclude files from the scan (can be used multiple times)  | `folderctl --folder /path/to/folder --validate --exclude *.log` |
